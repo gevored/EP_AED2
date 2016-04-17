@@ -59,7 +59,6 @@ int LerPrimeiraLinha(){
 			 return 0;
 		}
 	}	
-	//testando push
 }
 
 
