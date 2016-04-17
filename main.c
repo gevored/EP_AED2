@@ -16,7 +16,7 @@ int j,x;
 
 	for( j=0;j<qtdV;j++){
 		for(x=0;x<qtdV;x++){
-		printf("%d",matriz[j][x]);	
+		printf("%d   ",matriz[j][x]);	
 		}
 		printf("\n");
 	}	
@@ -26,19 +26,17 @@ PreencheMatriz(){
 	
 	int *vOrigem,vDestino ;
 	
-	float *peso;
+	int *peso;
 	
-
-	
-	while( (fscanf(arq,"%d %d %lf\n", &vOrigem, &vDestino, &peso))!=EOF ){
+	while( (fscanf(arq,"%d %d %d\n", &vOrigem, &vDestino, &peso))!=EOF ){
 		
-		printf("%d,%d,%f\n", vOrigem,vDestino,peso);
+		printf("%d,%d,%d\n", vOrigem,vDestino,peso);
 
 	int	i= (int) vOrigem;
 	int	j= (int) vDestino;
-		
-		matriz[i][j] = 1;
-	
+	int x  = (int) peso;
+
+		matriz[i][j] =x;
 	}
 	printMatriz();		
 }
@@ -50,7 +48,7 @@ void InicializaMatriz(int qtdV){
 	matriz = (int **) malloc(qtdV*sizeof(int *));
 	
 	for(i = 0 ; i<qtdV;i++){
-		matriz[i] = (int*) calloc (qtdV, sizeof(int));
+		matriz[i] = (int*) malloc (qtdV*sizeof(int));
 		
 		 for (j = 0; j < qtdV; j++){ //Percorre o Vetor de Inteiros atual.
            matriz[i][j] = 0; //Inicializa com 0.
