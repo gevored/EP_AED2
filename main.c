@@ -6,18 +6,41 @@
 //gcc mainc -o main    isso compila
 //main isso executa
 
+FILE *arq;
 int **matriz;
+int qtdV ;
 
-void printMatriz(int q){
+void printMatriz(){
 	
 int j,x;
 
-	for( j=0;j<q;j++){
-		for(x=0;x<q;x++){
+	for( j=0;j<qtdV;j++){
+		for(x=0;x<qtdV;x++){
 		printf("%d",matriz[j][x]);	
 		}
 		printf("\n");
 	}	
+}
+
+PreencheMatriz(){
+	
+	int *vOrigem,vDestino ;
+	
+	float *peso;
+	
+
+	
+	while( (fscanf(arq,"%d %d %lf\n", &vOrigem, &vDestino, &peso))!=EOF ){
+		
+		printf("%d,%d,%f\n", vOrigem,vDestino,peso);
+
+	int	i= (int) vOrigem;
+	int	j= (int) vDestino;
+		
+		matriz[i][j] = 1;
+	
+	}
+	printMatriz();		
 }
 	
 void InicializaMatriz(int qtdV){
@@ -31,11 +54,9 @@ void InicializaMatriz(int qtdV){
 		
 		 for (j = 0; j < qtdV; j++){ //Percorre o Vetor de Inteiros atual.
            matriz[i][j] = 0; //Inicializa com 0.
-       }
-       
+       }       
 	}
-	
-	printMatriz(qtdV);
+//printMatriz(qtdV);
 }
 
 int LerPrimeiraLinha(){
@@ -44,7 +65,7 @@ int LerPrimeiraLinha(){
 	int *qtdAresta ;
 
 	char url[] = "entrada.txt";
-	FILE *arq;
+
 		
 	arq = fopen(url, "r");
 	
@@ -54,7 +75,8 @@ int LerPrimeiraLinha(){
 		while( (fscanf(arq,"%d %d\n", &qtdVertice, &qtdAresta))!=EOF ){
 		//	printf("%d %d\n", qtdVertice, qtdAresta);
 				
-			InicializaMatriz((int)qtdVertice);		
+			qtdV = (int)qtdVertice;
+			InicializaMatriz(qtdV);		
 							
 			 return 0;
 		}
@@ -65,5 +87,6 @@ int LerPrimeiraLinha(){
 int main(int argc, char *argv[]) {
 	
 	LerPrimeiraLinha();
+	PreencheMatriz();
 	return 0;
 }
