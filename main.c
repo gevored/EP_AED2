@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
@@ -7,7 +8,7 @@
 //main isso executa
 
 FILE *arq;
-int **matriz;
+double **matriz;
 int qtdV ;
 
 void printMatriz(){
@@ -15,28 +16,31 @@ void printMatriz(){
 int j,x;
 
 	for( j=0;j<qtdV;j++){
-		for(x=0;x<qtdV;x++){
-		printf("%d   ",matriz[j][x]);	
+		for(x=0;x<qtdV;x++){			
+		printf("%.2lf   ",matriz[j][x]);
 		}
 		printf("\n");
 	}	
 }
 
+void AlgPrim(){
+	
+}
+
 PreencheMatriz(){
 	
-	int *vOrigem,vDestino ;
+	int vOrigem,vDestino ;	
+	double peso;
 	
-	int *peso;
-	
-	while( (fscanf(arq,"%d %d %d\n", &vOrigem, &vDestino, &peso))!=EOF ){
-		
-		printf("%d,%d,%d\n", vOrigem,vDestino,peso);
-
+	while( (fscanf(arq,"%d %d %lf\n", &vOrigem, &vDestino, &peso))!=EOF ){
+	 	
 	int	i= (int) vOrigem;
 	int	j= (int) vDestino;
-	int x  = (int) peso;
-
-		matriz[i][j] =x;
+	double d  = peso;
+		
+	matriz[i][j] = d;
+		
+	//printf("%.2lf\n",matriz[i][j]);
 	}
 	printMatriz();		
 }
@@ -45,14 +49,18 @@ void InicializaMatriz(int qtdV){
 	
 	int i,j,x;
 		
-	matriz = (int **) malloc(qtdV*sizeof(int *));
+	matriz = (double **) malloc(qtdV*sizeof(double *));
 	
 	for(i = 0 ; i<qtdV;i++){
-		matriz[i] = (int*) malloc (qtdV*sizeof(int));
+		matriz[i] = (double*) malloc (qtdV*sizeof(double));
 		
 		 for (j = 0; j < qtdV; j++){ //Percorre o Vetor de Inteiros atual.
            matriz[i][j] = 0; //Inicializa com 0.
-       }       
+           
+           //printf("%.2lf  ",matriz[i][j] );
+       }
+	   
+	   printf("\n");       
 	}
 //printMatriz(qtdV);
 }
@@ -86,5 +94,6 @@ int main(int argc, char *argv[]) {
 	
 	LerPrimeiraLinha();
 	PreencheMatriz();
+//	AlgPrim():
 	return 0;
 }
