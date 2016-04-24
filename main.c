@@ -3,19 +3,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+//INFORMAÇÕES DE EXECUÇÃO E COMPILAMENTO
+//gcc main.c -o main    					isso compila
+//main .entrada.txt saida.txt				isso executa
 
-#define INF 1000000000
-
-//gcc mainc -o main    isso compila
-//main isso executa
-
+//variáveis globais utilizadas durante o código
 FILE *arq;
 double **matriz;
 int qtdV ;
 int *pai;
 
-int maximumCost = 65535;
-
+//método auxiliar para verificar como foi está a matriz de adjacência
 void printMatriz(){
 	
 int j,x;
@@ -28,6 +26,7 @@ int j,x;
 	}	
 }
 
+//Método utilizado pra definir o vértice de início do algoritmo de Prim
 int BuscaPrimeiroElemento(){
 	int coord [2];
 	int i,j;
@@ -45,6 +44,7 @@ int BuscaPrimeiroElemento(){
 	}
 }
 
+// verifica se há arestas  diretas entre os vértices i e j
 int VrificaAresta(int i, int j){
 	
 	if(matriz[i][j] != 0 || matriz[j][i] != 0){
@@ -54,6 +54,7 @@ int VrificaAresta(int i, int j){
 	}	
 }
 
+//captura o peso entre as arestas i e j
 float CapturaPeso(int i , int j){
 	
 	if(matriz[i][j] != 0){
@@ -63,14 +64,15 @@ float CapturaPeso(int i , int j){
 	}
 }
 
-GerarSaida(){
+//método pra gerar o txt de saída
+GerarSaida(char *arquivoSaida){
 	float somatoria =0;
 	int i;
 	
 	for (i = 0; i<qtdV;i++){
 		somatoria = somatoria + CapturaPeso(pai[i],i);	
 	}		
-	char url[]="saida.txt";
+	char *url= arquivoSaida;
 	char ch;
 	FILE *arq;		
 	
@@ -89,6 +91,7 @@ GerarSaida(){
 	}	
 }
 
+//Algorítmo de Prim 
 void AlgPrim(){
 	
 	int origi = BuscaPrimeiroElemento();
@@ -104,7 +107,7 @@ void AlgPrim(){
 	
 	while(1){
 		primeiro =1;
-		for(i=0;i<qtdV;i++){ //percorrer todos os vértices no array pai
+		for(i=0;i<qtdV;i++){ //percorre todos os vértices do array pai 
 			if(pai[i] != -1){ //indicador de vértice visitado
 				for(j=0;j<qtdV;j++){
 					//procurar o menor peso do vertice i
@@ -115,7 +118,8 @@ void AlgPrim(){
 								origi = i;
 								dist =j;
 								primeiro = 0 ;								
-							}// 1º if
+							}
+							//caso não seja o primeiro vértice vizinho verificar se o mesmo possui uma aresta de menor  valor
 							else{
 								if(menorPeso > CapturaPeso (i,j)){
 									menorPeso = CapturaPeso (i,j);
@@ -123,18 +127,20 @@ void AlgPrim(){
 									dist =j;
 								}	
 							}
-						}//2º if 
+						}
 					}			
 				}
 			}			
 		}		
 		if(primeiro ==1){
 				break;
-		}			
+		}		
+		//aqui inputa os pares de vértices que possuem o menor  arestas
 		pai[dist]=origi;		
 	}		
 }
 
+// preenche a matriz com  os valores do txt
 PreencheMatriz(){
 	
 	int vOrigem,vDestino ;	
@@ -150,7 +156,8 @@ PreencheMatriz(){
 	}
 	//printMatriz();		
 }
-	
+
+// método responsável por alocar espaço para a matriz que representará o grafo	
 void InicializaMatriz(int qtdV){
 	
 	int i,j,x;
@@ -161,21 +168,18 @@ void InicializaMatriz(int qtdV){
 		matriz[i] = (double*) malloc (qtdV*sizeof(double));
 		
 		 for (j = 0; j < qtdV; j++){ //Percorre o Vetor de Inteiros atual.
-           matriz[i][j] = 0; //Inicializa com 0.
-           
-           //printf("%.2lf  ",matriz[i][j] );
+           matriz[i][j] = 0; //Inicializa a matriz com 0.
        }	   
-	   //printf("\n");       
 	}
-//printMatriz(qtdV);
 }
 
-int LerPrimeiraLinha(){
+//ler a primeira linha  capturando as informações de quantidade de vértice e quantidade de arestas
+int LerPrimeiraLinha(char *entrada){
 	
 	int *qtdVertice ;
 	int *qtdAresta ;
 
-	char url[] = "entrada2.txt";
+	char *url = entrada;
 		
 	arq = fopen(url, "r");
 	
@@ -185,7 +189,7 @@ int LerPrimeiraLinha(){
 		while( (fscanf(arq,"%d %d\n", &qtdVertice, &qtdAresta))!=EOF ){
 		//	printf("%d %d\n", qtdVertice, qtdAresta);
 				
-			qtdV = qtdVertice;
+			qtdV = (int) qtdVertice;
 			InicializaMatriz(qtdV);		
 							
 			 return 0;
@@ -195,9 +199,10 @@ int LerPrimeiraLinha(){
 
 int main(int argc, char *argv[]) {
 	
-	LerPrimeiraLinha();
+	//O PROGRAMA DEVE SER EXECUTADO VIA LINHA DE COMANDO PASSANDO DOIS PARÂMETROS, O PRIMEIRO O ARQUIVO DE ENTRADA.TXT E O DE SAIDA.TXT			
+	LerPrimeiraLinha(argv[1]);
 	PreencheMatriz();
 	AlgPrim();
-	GerarSaida();
+	GerarSaida(argv[2]);
 	return 0;
 }
